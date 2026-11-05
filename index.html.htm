@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabzi & Grocery Express - Mother Dairy & Fresh Produce</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        skybg: '#f0f9ff',
+                        skycard: '#e0f2fe',
+                        beigelight: '#fefce8',
+                        beigeaccent: '#fef3c7',
+                        beigeborder: '#fde68a',
+                        brandnavy: '#0c4a6e',
+                        brandteal: '#0284c7',
+                        mdblue: '#0055a5',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f0f9ff;
+            font-family: 'Inter', sans-serif;
+        }
+        .beige-card {
+            background-color: #ffffff;
+            border: 1px solid #fde68a;
+            box-shadow: 0 4px 6px -1px rgba(254, 243, 199, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .beige-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(253, 230, 138, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Custom scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+            :root{--visual-page:#f0f9ff;--visual-primary:#0c4a6e;--visual-accent:#fbbf24;--visual-card:#ffffff;--visual-border:#fde68a}
+        body{background-color:var(--visual-page)!important}
+        .bg-brandnavy{background-color:var(--visual-primary)!important}.text-brandnavy{color:var(--visual-primary)!important}.border-brandnavy{border-color:var(--visual-primary)!important}
+        .bg-amber-400{background-color:var(--visual-accent)!important}.hover\:bg-amber-300:hover{background-color:var(--visual-accent)!important}
+        .beige-card{background-color:var(--visual-card)!important;border-color:var(--visual-border)!important}
+        .visual-editing [data-visual-static],.visual-editing [data-visual-field]{outline:1px dashed #f59e0b;outline-offset:2px;border-radius:3px;cursor:text;min-width:10px}
+        .visual-editing [data-visual-photo]{outline:2px dashed #f59e0b;outline-offset:2px;cursor:pointer}
+        .visual-edit-tools{position:fixed;right:16px;bottom:82px;z-index:70;width:245px;background:#fff;border:1px solid #dbe3ea;border-radius:16px;padding:14px;box-shadow:0 12px 38px #0c30442e;display:none;color:#17212b;font-family:Inter,sans-serif}
+        .visual-editing .visual-edit-tools{display:block}.visual-edit-tools h3{font-size:15px;font-weight:800;margin:0 0 10px}.visual-edit-tools button,.visual-edit-tools label{font:700 13px Inter,sans-serif;border:0;border-radius:9px;background:#eef5f8;padding:9px 11px;cursor:pointer;color:#102e40;display:inline-flex;align-items:center;justify-content:center;gap:7px;margin:2px}.visual-edit-tools .visual-wide{width:100%;background:#0c4a6e;color:white;margin:3px 0 7px}.visual-edit-tools .visual-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin:7px 3px}.visual-edit-tools input[type=color]{width:38px;height:28px;border:0;background:transparent;padding:0;cursor:pointer}.visual-edit-tools input[type=file]{display:none}
+        .visual-edit-toggle{position:fixed;right:16px;bottom:16px;z-index:71;border:0;border-radius:999px;padding:12px 16px;background:#102e40;color:white;box-shadow:0 7px 22px #0003;font:800 14px Inter,sans-serif;cursor:pointer}.visual-editing .visual-edit-toggle{background:#b77908}
+        .visual-delete-product{position:absolute;right:7px;top:7px;z-index:4;width:30px;height:30px;border:0;border-radius:50%;background:white;color:#b42318;font-size:18px;cursor:pointer;display:none}.visual-editing .visual-delete-product{display:block}
+        .visual-editing #productGrid [data-visual-photo]{position:relative}
+        .visual-editing #productGrid [data-visual-photo]::after{content:'Click to replace image';position:absolute;bottom:4px;left:4px;background:#102e40d9;color:white;border-radius:6px;padding:3px 6px;font:600 10px Inter,sans-serif;pointer-events:none}
+        .checkout-footer{max-height:58vh;overflow-y:auto}
+        @media(max-width:520px){.visual-edit-tools{right:10px;bottom:75px;width:220px}.visual-edit-toggle{right:10px;bottom:12px}}</style>
+</head>
+<body class="min-h-screen text-slate-800 pb-24">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-sky-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <!-- Logo / Title -->
+            <div class="flex items-center gap-2">
+                <div class="bg-amber-100 text-amber-700 p-2 rounded-xl border border-amber-200">
+                    <i class="fa-solid fa-basket-shopping text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-brandnavy leading-none">FreshSabzi & Dairy</h1>
+                    <p class="text-xs text-sky-600 font-medium mt-0.5">Farm Fresh & Dairy Essentials</p>
+                </div>
+            </div>
+
+            <!-- Search Bar (Desktop/Tablet) -->
+            <div class="hidden sm:flex flex-1 max-w-md relative">
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search vegetables, fruits, Mother Dairy products..." 
+                    class="w-full pl-10 pr-4 py-2 bg-sky-50 border border-sky-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:bg-white transition-all">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-sky-400 text-sm"></i>
+            </div>
+
+            <!-- Header Action Right -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleCartModal()" class="relative p-2.5 bg-sky-100 hover:bg-sky-200 text-brandnavy rounded-full transition">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cartHeaderBadge" class="hidden absolute -top-1 -right-1 bg-amber-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="sm:hidden px-4 pb-3">
+            <div class="relative w-full">
+                <input type="text" id="searchInputMobile" onkeyup="filterProductsMobile()" placeholder="Search vegetables, fruits, Mother Dairy..." 
+                    class="w-full pl-10 pr-4 py-2 bg-sky-50 border border-sky-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:bg-white transition-all">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-sky-400 text-sm"></i>
+            </div>
+        </div>
+
+        <!-- Category Navigation Chips (Mother Dairy replaced Small Packs) -->
+        <div class="bg-amber-50/60 border-t border-amber-100 px-4 py-2.5 overflow-x-auto no-scrollbar">
+            <div class="max-w-6xl mx-auto flex items-center gap-2 sm:gap-4 min-w-max">
+                <button onclick="switchTab('all')" id="tab-all" class="tab-btn active px-4 py-1.5 rounded-full text-sm font-semibold transition bg-brandnavy text-white shadow-sm">
+                    <i class="fa-solid fa-border-all mr-1.5"></i> All Items
+                </button>
+                <button onclick="switchTab('vegetables')" id="tab-vegetables" class="tab-btn px-4 py-1.5 rounded-full text-sm font-semibold transition bg-white text-slate-700 hover:bg-amber-100 border border-amber-200">
+                    <i class="fa-solid fa-carrot mr-1.5 text-orange-500"></i> Vegetables
+                </button>
+                <button onclick="switchTab('fruits')" id="tab-fruits" class="tab-btn px-4 py-1.5 rounded-full text-sm font-semibold transition bg-white text-slate-700 hover:bg-amber-100 border border-amber-200">
+                    <i class="fa-solid fa-apple-whole mr-1.5 text-red-500"></i> Fruits
+                </button>
+                <!-- Replaced Small Packs with MOTHERDAIRY -->
+                <button onclick="switchTab('motherdairy')" id="tab-motherdairy" class="tab-btn px-4 py-1.5 rounded-full text-sm font-semibold transition bg-white text-slate-700 hover:bg-sky-100 border border-blue-300">
+                    <i class="fa-solid fa-cow mr-1.5 text-blue-600"></i> DAIRY PRODUCTS
+                </button>
+                                <button onclick="switchTab('smallpacks')" id="tab-smallpacks" class="tab-btn px-4 py-1.5 rounded-full text-sm font-semibold transition bg-white text-slate-700 hover:bg-amber-100 border border-amber-200">
+                    <i class="fa-solid fa-leaf mr-1.5 text-emerald-500"></i> SMALL PACKS
+                </button>
+                <button onclick="switchTab('midpacks')" id="tab-midpacks" class="tab-btn px-4 py-1.5 rounded-full text-sm font-semibold transition bg-white text-slate-700 hover:bg-amber-100 border border-amber-200">
+                    <i class="fa-solid fa-box-open mr-1.5 text-orange-500"></i> MID PACKS
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 pt-6">
+
+        <!-- Banner Alert -->
+        <div class="mb-6 bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 text-white rounded-2xl p-4 sm:p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm hidden sm:block">
+                    <i class="fa-solid fa-truck-fast text-3xl"></i>
+                </div>
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 bg-amber-300 text-amber-900 font-bold text-xs rounded-full uppercase tracking-wider mb-1">Express Delivery</span>
+                    <h2 class="text-lg sm:text-xl font-bold">Fresh Vegetables & Genuine Mother Dairy Products</h2>
+                    <p class="text-xs sm:text-sm text-sky-100">Same day morning & evening slots available in your area.</p>
+                </div>
+            </div>
+            <div class="bg-white text-brandnavy font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-sm whitespace-nowrap border border-amber-200">
+                ⚡ Delivered in 20 Mins
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 id="sectionTitle" class="text-lg font-bold text-brandnavy flex items-center gap-2">
+                <span>All Products</span>
+                <span id="productCount" class="text-xs font-medium px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">16 Items</span>
+            </h2>
+            <div class="text-xs text-slate-500">
+                <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> 100% Quality Guaranteed
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+            <!-- Dynamically Populated by JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Floating Sticky Cart Bar (Bottom) -->
+    <div id="floatingCart" class="fixed bottom-3 left-4 right-4 max-w-4xl mx-auto z-40 hidden">
+        <div class="bg-brandnavy text-white rounded-2xl p-3 sm:p-4 shadow-xl flex items-center justify-between border border-amber-200/40 backdrop-blur-md">
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-400 text-slate-900 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg shadow">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-sky-200 font-medium"><span id="floatCartQty">0</span> Items in Cart</p>
+                    <p class="text-base sm:text-lg font-bold text-white">₹<span id="floatCartTotal">0</span></p>
+                </div>
+            </div>
+            <button onclick="toggleCartModal()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-2 shadow-md">
+                View Cart <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Slide-over / Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div onclick="toggleCartModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"></div>
+        
+        <!-- Drawer Content -->
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between z-10">
+            <!-- Header -->
+            <div class="bg-sky-50 px-5 py-4 border-b border-sky-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-brandteal text-xl"></i>
+                    <h3 class="font-bold text-brandnavy text-lg">Your Cart</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="w-8 h-8 rounded-full bg-white hover:bg-slate-100 text-slate-500 flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items Container -->
+            <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-3">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Checkout / Summary Footer -->
+            <div class="checkout-footer bg-sky-50 border-t border-sky-100 p-5 space-y-4">
+                <!-- Customer details -->
+                <div>
+                    <label for="deliveryName" class="block text-xs font-semibold text-slate-600 mb-1">YOUR NAME</label>
+                    <input type="text" id="deliveryName" autocomplete="name" required placeholder="Enter your name"
+                        class="w-full px-3 py-2 bg-white border border-sky-200 rounded-lg text-xs focus:ring-2 focus:ring-sky-400 focus:outline-none">
+                </div>
+                <div>
+                    <label for="deliveryMobile" class="block text-xs font-semibold text-slate-600 mb-1">MOBILE NUMBER</label>
+                    <input type="tel" id="deliveryMobile" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10-digit mobile number"
+                        class="w-full px-3 py-2 bg-white border border-sky-200 rounded-lg text-xs focus:ring-2 focus:ring-sky-400 focus:outline-none">
+                </div>
+                <div>
+                    <label for="deliveryAddress" class="block text-xs font-semibold text-slate-600 mb-1">FULL ADDRESS</label>
+                    <textarea id="deliveryAddress" autocomplete="street-address" required placeholder="Enter flat / house no., street, area and city" rows="2"
+                        class="w-full px-3 py-2 bg-white border border-sky-200 rounded-lg text-xs focus:ring-2 focus:ring-sky-400 focus:outline-none"></textarea>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="space-y-1.5 text-xs text-slate-600">
+                    <div class="flex justify-between">
+                        <span>Item Subtotal</span>
+                        <span class="font-medium text-slate-800">₹<span id="cartSubtotal">0</span></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Delivery Fee</span>
+                        <span class="text-emerald-600 font-medium">FREE</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-bold text-brandnavy pt-2 border-t border-sky-200">
+                        <span>Total Payable</span>
+                        <span class="text-emerald-700">₹<span id="cartGrandTotal">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Place Order Button -->
+                <button onclick="placeOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check-circle"></i> Confirm & Order via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg transition opacity-0 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i> <span id="toastMsg">Item updated</span>
+    </div>
+
+    <!-- JavaScript App Logic -->
+    <script>
+        // Complete Product Catalog with Mother Dairy section replacing Small Packs
+        const products = [
+            // --- MOTHER DAIRY SECTION ---
+            {
+                id: 'md-1',
+                name: 'Mother Dairy Toned Milk',
+                category: 'motherdairy',
+                weight: '500 ml',
+                price: 27,
+                badge: 'Fresh Daily',
+                icon: 'fa-cow',
+                iconColor: 'text-blue-600',
+                bgColor: 'bg-blue-50'
+            },
+            {
+                id: 'md-2',
+                name: 'Mother Dairy Full Cream Milk',
+                category: 'motherdairy',
+                weight: '500 ml',
+                price: 33,
+                badge: 'Rich & Creamy',
+                icon: 'fa-bottle-droplet',
+                iconColor: 'text-blue-600',
+                bgColor: 'bg-blue-50'
+            },
+            {
+                id: 'md-3',
+                name: 'Mother Dairy Cow Milk',
+                category: 'motherdairy',
+                weight: '500 ml',
+                price: 28,
+                badge: 'Pure & Healthy',
+                icon: 'fa-glass-water',
+                iconColor: 'text-blue-500',
+                bgColor: 'bg-blue-50'
+            },
+            {
+                id: 'md-4',
+                name: 'Mother Dairy Dahi (Curd)',
+                category: 'motherdairy',
+                weight: '400 g Pouch',
+                price: 35,
+                badge: 'Probiotic',
+                icon: 'fa-bowl-rice',
+                iconColor: 'text-amber-600',
+                bgColor: 'bg-amber-50'
+            },
+            {
+                id: 'md-5',
+                name: 'Mother Dairy Fresh Paneer',
+                category: 'motherdairy',
+                weight: '200 g',
+                price: 95,
+                badge: 'High Protein',
+                icon: 'fa-cubes',
+                iconColor: 'text-amber-500',
+                bgColor: 'bg-amber-50'
+            },
+            {
+                id: 'md-6',
+                name: 'Mother Dairy Butter',
+                category: 'motherdairy',
+                weight: '100 g',
+                price: 58,
+                badge: 'Delicious',
+                icon: 'fa-square',
+                iconColor: 'text-yellow-500',
+                bgColor: 'bg-yellow-50'
+            },
+            {
+                id: 'md-7',
+                name: 'Mother Dairy Chhach (Buttermilk)',
+                category: 'motherdairy',
+                weight: '400 ml',
+                price: 15,
+                badge: 'Refreshing',
+                icon: 'fa-wine-glass',
+                iconColor: 'text-sky-500',
+                bgColor: 'bg-sky-50'
+            },
+            {
+                id: 'md-8',
+                name: 'Mother Dairy Mishti Doi',
+                category: 'motherdairy',
+                weight: '85 g Cup',
+                price: 25,
+                badge: 'Sweet Delight',
+                icon: 'fa-ice-cream',
+                iconColor: 'text-rose-500',
+                bgColor: 'bg-rose-50'
+            },
+
+            // --- VEGETABLES ---
+            {
+                id: 'v-1',
+                name: 'Fresh Farm Potatoes (Aloo)',
+                category: 'vegetables',
+                weight: '1 kg',
+                price: 32,
+                badge: 'Daily Staple',
+                icon: 'fa-circle',
+                iconColor: 'text-amber-700',
+                bgColor: 'bg-amber-50'
+            },
+            {
+                id: 'v-2',
+                name: 'Red Onions (Pyaz)',
+                category: 'vegetables',
+                weight: '1 kg',
+                price: 45,
+                badge: 'Fresh Stock',
+                icon: 'fa-disease',
+                iconColor: 'text-purple-600',
+                bgColor: 'bg-purple-50'
+            },
+            {
+                id: 'v-3',
+                name: 'Desi Tomatoes (Tamatar)',
+                category: 'vegetables',
+                weight: '500 g',
+                price: 24,
+                badge: 'Juicy',
+                icon: 'fa-apple-whole',
+                iconColor: 'text-red-600',
+                bgColor: 'bg-red-50'
+            },
+            {
+                id: 'v-4',
+                name: 'Fresh Green Cauliflower',
+                category: 'vegetables',
+                weight: '1 pc (approx 500g)',
+                price: 40,
+                badge: 'Organic',
+                icon: 'fa-seedling',
+                iconColor: 'text-emerald-600',
+                bgColor: 'bg-emerald-50'
+            },
+
+            // --- FRUITS ---
+            {
+                id: 'f-1',
+                name: 'Shimla Apples',
+                category: 'fruits',
+                weight: '500 g',
+                price: 90,
+                badge: 'Sweet & Crisp',
+                icon: 'fa-apple-whole',
+                iconColor: 'text-red-500',
+                bgColor: 'bg-red-50'
+            },
+            {
+                id: 'f-2',
+                name: 'Robusta Bananas',
+                category: 'fruits',
+                weight: '1 Dozen (12 pcs)',
+                price: 60,
+                badge: 'Energy Pack',
+                icon: 'fa-pepper-hot',
+                iconColor: 'text-yellow-600',
+                bgColor: 'bg-yellow-50'
+            },
+
+            // --- ESSENTIALS ---
+            {
+                id: 'e-1',
+                name: 'Fresh Green Coriander (Dhaniya)',
+                category: 'smallpacks',
+                weight: '100 g',
+                price: 15,
+                badge: 'Fresh Bunch',
+                icon: 'fa-leaf',
+                iconColor: 'text-emerald-500',
+                bgColor: 'bg-emerald-50'
+            },
+            {
+                id: 'e-2',
+                name: 'Spicy Green Chillies (Hari Mirch)',
+                category: 'smallpacks',
+                weight: '100 g',
+                price: 12,
+                badge: 'Pungent',
+                icon: 'fa-pepper-hot',
+                iconColor: 'text-emerald-600',
+                bgColor: 'bg-emerald-50'
+            }
+        ];
+
+        // State Store
+        let cart = {};
+        let currentTab = 'all';
+
+        // Initialize App
+        window.onload = function() {
+            renderProducts();
+            updateCartUI();
+        };
+
+        // Render Product Cards Grid
+        function renderProducts(filterQuery = '') {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchesTab = currentTab === 'all' || p.category === currentTab;
+                const matchesSearch = p.name.toLowerCase().includes(filterQuery.toLowerCase()) || 
+                                      p.category.toLowerCase().includes(filterQuery.toLowerCase());
+                return matchesTab && matchesSearch;
+            });
+
+            document.getElementById('productCount').innerText = `${filtered.length} Items`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-amber-200">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300 mb-2"></i>
+                        <p class="text-sm font-semibold text-slate-600">No items found</p>
+                        <p class="text-xs text-slate-400 mt-1">Try searching for something else or switch categories.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const qty = cart[product.id] ? cart[product.id].quantity : 0;
+                
+                const card = document.createElement('div');
+                card.className = "beige-card rounded-2xl p-3 sm:p-4 flex flex-col justify-between transition-all duration-200 relative group";
+                card.dataset.visualProductId = product.id;
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Header / Badge -->
+                        <div class="flex items-center justify-between mb-2">
+                            <span data-visual-field="badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full ${product.category === 'motherdairy' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-800'}">
+                                ${product.badge}
+                            </span>
+                        </div>
+
+                        <!-- Product Visual Illustration -->
+                        <div data-visual-photo class="h-24 sm:h-28 ${product.bgColor} rounded-xl flex items-center justify-center mb-3 border border-slate-100 overflow-hidden">
+                            <i class="visual-product-icon fa-solid ${product.icon} text-4xl sm:text-5xl ${product.iconColor} transition-transform group-hover:scale-110 duration-200" style="${product.visualImage ? 'display:none' : ''}"></i><img class="visual-product-image w-full h-full object-cover ${product.visualImage ? '' : 'hidden'}" src="${product.visualImage || ''}" alt="${product.name}">
+                        </div>
+
+                        <!-- Info -->
+                        <h3 data-visual-field="name" class="font-bold text-slate-800 text-sm leading-snug line-clamp-2">${product.name}</h3>
+                        <p data-visual-field="weight" class="text-xs text-slate-400 font-medium mt-0.5">${product.weight}</p>
+                    </div>
+
+                    <!-- Price & Action -->
+                    <div class="mt-3 pt-2 border-t border-amber-100/60 flex items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs text-slate-400">Price</span>
+                            <p class="text-base font-extrabold text-brandnavy">₹<span data-visual-field="price">${product.price}</span></p>
+                        </div>
+
+                        <!-- Quantity Selector / Add Button -->
+                        <div>
+                            ${qty > 0 ? `
+                                <div class="flex items-center bg-brandnavy text-white rounded-lg px-1.5 py-1 text-xs shadow-sm">
+                                    <button onclick="updateQty('${product.id}', -1)" class="w-6 h-6 hover:bg-white/20 rounded flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-minus text-[10px]"></i>
+                                    </button>
+                                    <span class="px-2 font-bold">${qty}</span>
+                                    <button onclick="updateQty('${product.id}', 1)" class="w-6 h-6 hover:bg-white/20 rounded flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-plus text-[10px]"></i>
+                                    </button>
+                                </div>
+                            ` : `
+                                <button onclick="updateQty('${product.id}', 1)" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1 shadow-sm">
+                                    <i class="fa-solid fa-plus text-[10px]"></i> ADD
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Switch Category Tabs
+        function switchTab(tabCategory) {
+            currentTab = tabCategory;
+            
+            // Update Active Tab Styling
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-1.5 rounded-full text-sm font-semibold transition bg-white text-slate-700 hover:bg-amber-100 border border-amber-200";
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabCategory}`);
+            if (activeBtn) {
+                if (tabCategory === 'motherdairy') {
+                    activeBtn.className = "tab-btn active px-4 py-1.5 rounded-full text-sm font-semibold transition bg-blue-600 text-white shadow-sm";
+                } else {
+                    activeBtn.className = "tab-btn active px-4 py-1.5 rounded-full text-sm font-semibold transition bg-brandnavy text-white shadow-sm";
+                }
+            }
+
+            // Update Title
+            const titles = {
+                'all': 'All Products',
+                'vegetables': 'Fresh Vegetables',
+                'fruits': 'Fresh Fruits',
+                'motherdairy': 'DAIRY PRODUCTS',
+                'smallpacks': 'SMALL PACKS',
+                'midpacks': 'MID PACKS'
+            };
+            document.getElementById('sectionTitle').children[0].innerText = titles[tabCategory] || 'Products';
+
+            // Reset search input and render
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInputMobile').value = '';
+            renderProducts();
+        }
+
+        // Update Item Quantities
+        function updateQty(productId, change) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            if (!cart[productId]) {
+                if (change > 0) {
+                    cart[productId] = { ...product, quantity: 1 };
+                    showToast(`Added ${product.name} to cart`);
+                }
+            } else {
+                cart[productId].quantity += change;
+                if (cart[productId].quantity <= 0) {
+                    delete cart[productId];
+                    showToast(`Removed from cart`);
+                }
+            }
+
+            renderProducts();
+            updateCartUI();
+        }
+
+        // Update Floating Cart Bar & Modal UI
+        function updateCartUI() {
+            const keys = Object.keys(cart);
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            keys.forEach(k => {
+                totalItems += cart[k].quantity;
+                totalPrice += cart[k].quantity * cart[k].price;
+            });
+
+            // Update Badge & Floating bar
+            document.getElementById('floatCartQty').innerText = totalItems;
+            document.getElementById('floatCartTotal').innerText = totalPrice;
+            document.getElementById('cartSubtotal').innerText = totalPrice;
+            document.getElementById('cartGrandTotal').innerText = totalPrice;
+
+            const badge = document.getElementById('cartHeaderBadge');
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('hidden');
+                document.getElementById('floatingCart').classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                document.getElementById('floatingCart').classList.add('hidden');
+            }
+
+            // Populate Cart Drawer List
+            const list = document.getElementById('cartItemsList');
+            list.innerHTML = '';
+
+            if (keys.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-16">
+                        <i class="fa-solid fa-cart-flatbed text-4xl text-slate-300 mb-3"></i>
+                        <p class="font-bold text-slate-700 text-sm">Your basket is empty</p>
+                        <p class="text-xs text-slate-400 mt-1">Add fresh vegetables or Mother Dairy items to proceed!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            keys.forEach(k => {
+                const item = cart[k];
+                const itemRow = document.createElement('div');
+                itemRow.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl";
+                itemRow.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 ${item.bgColor} rounded-lg flex items-center justify-center">
+                            <i class="fa-solid ${item.icon} text-lg ${item.iconColor}"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-xs text-slate-800 line-clamp-1">${item.name}</p>
+                            <p class="text-[10px] text-slate-400">₹${item.price} x ${item.quantity}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center bg-white border border-slate-300 rounded-lg px-1.5 py-0.5 text-xs">
+                            <button onclick="updateQty('${item.id}', -1)" class="w-5 h-5 hover:bg-slate-100 rounded text-slate-600 font-bold">-</button>
+                            <span class="px-2 font-bold text-slate-800">${item.quantity}</span>
+                            <button onclick="updateQty('${item.id}', 1)" class="w-5 h-5 hover:bg-slate-100 rounded text-slate-600 font-bold">+</button>
+                        </div>
+                        <span class="font-bold text-xs text-brandnavy min-w-[40px] text-right">₹${item.price * item.quantity}</span>
+                    </div>
+                `;
+                list.appendChild(itemRow);
+            });
+        }
+
+        // Toggle Drawer Modal
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Search Filter
+        function filterProducts() {
+            const val = document.getElementById('searchInput').value;
+            renderProducts(val);
+        }
+
+        function filterProductsMobile() {
+            const val = document.getElementById('searchInputMobile').value;
+            renderProducts(val);
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2000);
+        }
+
+        // Simulate WhatsApp Checkout Order
+        function placeOrder() {
+            const keys = Object.keys(cart);
+            if (keys.length === 0) {
+                showToast("Please add items to your cart first!");
+                return;
+            }
+
+            const name = document.getElementById('deliveryName').value.trim();
+            const mobile = document.getElementById('deliveryMobile').value.trim();
+            const address = document.getElementById('deliveryAddress').value.trim();
+            if (!name) {
+                showToast("Please enter your name.");
+                document.getElementById('deliveryName').focus();
+                return;
+            }
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                showToast("Please enter a valid 10-digit mobile number.");
+                document.getElementById('deliveryMobile').focus();
+                return;
+            }
+            if (!address) {
+                showToast("Please enter your full address.");
+                document.getElementById('deliveryAddress').focus();
+                return;
+            }
+
+            let summary = "🛒 *NEW SABZI & MOTHER DAIRY ORDER*\n-----------------------------------\n";
+            let grandTotal = 0;
+
+            keys.forEach((k, index) => {
+                const item = cart[k];
+                const lineTotal = item.price * item.quantity;
+                grandTotal += lineTotal;
+                summary += `${index + 1}. *${item.name}* (${item.weight})\n    Qty: ${item.quantity} | Amt: ₹${lineTotal}\n`;
+            });
+
+            summary += `-----------------------------------\n*Total Amount:* ₹${grandTotal}\n`;
+            summary += `👤 *Customer Name:* ${name}\n`;
+            summary += `📱 *Mobile Number:* ${mobile}\n`;
+            summary += `📍 *Full Address:* ${address}\n`;
+            summary += `⚡ Please confirm delivery slot.`;
+
+            const encoded = encodeURIComponent(summary);
+            const whatsappUrl = `https://wa.me/919818319187?text=${encoded}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+    <aside class="visual-edit-tools" aria-label="Visual website editor">
+      <h3>✏️ Edit website appearance</h3>
+      <button class="visual-wide" id="visualSave">Save changes</button>
+      <div class="visual-row">Page background <input type="color" id="visualPageColor" value="#f0f9ff"></div>
+      <div class="visual-row">Main brand color <input type="color" id="visualPrimaryColor" value="#0c4a6e"></div>
+      <div class="visual-row">Buttons / accent <input type="color" id="visualAccentColor" value="#fbbf24"></div>
+      <button id="visualAddProduct">＋ Add product</button>
+      <button id="visualBackup">Download backup</button>
+      <input id="visualImageInput" type="file" accept="image/*">
+      <p style="font-size:11px;color:#64748b;line-height:1.4;margin:8px 2px 0">Click outlined text to edit it. Click a product illustration to replace it with a photo.</p>
+    </aside>
+    <button class="visual-edit-toggle" id="visualEditToggle">✏️ Edit website</button>
+    <script>
+    (() => {
+      const STORAGE_KEY = 'sagarSampleVisualEditor';
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_) { saved = {}; }
+      const isLegacy = saved.version !== 2;
+      const productList = products;
+      if (Array.isArray(saved.products)) saved.products.forEach(item => { const p = productList.find(x => x.id === item.id); if (p) Object.assign(p, item); });
+      productList.forEach(p => { if (p.category === 'essentials') p.category = 'smallpacks'; });
+      const root = document.documentElement;
+      const colorKeys = {page:'--visual-page',primary:'--visual-primary',accent:'--visual-accent'};
+      Object.entries(saved.colors || {}).forEach(([key,value]) => { if (colorKeys[key] && /^#[0-9a-f]{6}$/i.test(value)) root.style.setProperty(colorKeys[key],value); });
+      const staticEls = [...document.querySelectorAll('h1,h2,h3,h4,p,label,span,a,button,li,small')].filter(el => !el.closest('#productGrid,.visual-edit-tools') && !el.classList.contains('visual-edit-toggle') && el.children.length === 0 && el.textContent.trim());
+      const checkoutFooter = document.querySelector('.checkout-footer');
+      staticEls.forEach((el,index) => {
+        el.dataset.visualStatic = `s${index}`;
+        const inCheckout = el.closest('.checkout-footer');
+        const afterCheckout = checkoutFooter && Boolean(checkoutFooter.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING);
+        const newCustomerLabel = inCheckout && ['deliveryName','deliveryMobile','deliveryAddress'].includes(el.htmlFor);
+        const oldIndex = index - (isLegacy && (inCheckout || afterCheckout) ? 2 : 0);
+        if (!newCustomerLabel && saved.text && saved.text[`s${oldIndex}`] != null) el.textContent = saved.text[`s${oldIndex}`];
+      });
+      let editing = false, activeProduct = null;
+      const grid = document.getElementById('productGrid');
+      const imageInput = document.getElementById('visualImageInput');
+      const findProduct = id => productList.find(p => String(p.id) === String(id));
+      function attachCardTools(){
+        grid.querySelectorAll('[data-visual-product-id]').forEach(card => {
+          const id=card.dataset.visualProductId;
+          card.querySelectorAll('[data-visual-field]').forEach(el => { el.contentEditable=editing?'true':'false'; });
+          if(!card.querySelector('.visual-delete-product')){const del=document.createElement('button');del.className='visual-delete-product';del.type='button';del.textContent='×';del.title='Remove product';del.onclick=()=>{const i=productList.findIndex(p=>String(p.id)===String(id));if(i>=0)productList.splice(i,1);card.remove();if(typeof updateCartUI==='function')updateCartUI();};card.appendChild(del);}
+        });
+      }
+      function setEditing(value){editing=value;document.body.classList.toggle('visual-editing',editing);document.querySelectorAll('[data-visual-static]').forEach(el=>el.contentEditable=editing?'true':'false');attachCardTools();document.getElementById('visualEditToggle').textContent=editing?'✓ Done editing':'✏️ Edit website';}
+      grid.addEventListener('click',event=>{const photo=event.target.closest('[data-visual-photo]');if(editing&&photo){event.preventDefault();event.stopPropagation();activeProduct=photo.closest('[data-visual-product-id]')?.dataset.visualProductId;imageInput.click();}});
+      imageInput.addEventListener('change',()=>{const file=imageInput.files?.[0],p=findProduct(activeProduct);if(!file||!p)return;const reader=new FileReader();reader.onload=()=>{p.visualImage=reader.result;const card=grid.querySelector(`[data-visual-product-id="${CSS.escape(String(p.id))}"]`);if(card){const img=card.querySelector('.visual-product-image'),icon=card.querySelector('.visual-product-icon');img.src=p.visualImage;img.classList.remove('hidden');icon.style.display='none';}persist(false);};reader.readAsDataURL(file);imageInput.value='';});
+      function persist(showMessage=true){
+        const text={};document.querySelectorAll('[data-visual-static]').forEach(el=>text[el.dataset.visualStatic]=el.textContent.trim());
+        grid.querySelectorAll('[data-visual-product-id]').forEach(card=>{const p=findProduct(card.dataset.visualProductId);if(!p)return;const val=name=>card.querySelector(`[data-visual-field="${name}"]`)?.textContent.trim();if(val('name'))p.name=val('name');if(val('weight'))p.weight=val('weight');if(val('badge'))p.badge=val('badge');const price=val('price');if(price&&Number.isFinite(Number(price.replace(/[^0-9.]/g,''))))p.price=Number(price.replace(/[^0-9.]/g,''));});
+        const colors={page:getComputedStyle(root).getPropertyValue('--visual-page').trim(),primary:getComputedStyle(root).getPropertyValue('--visual-primary').trim(),accent:getComputedStyle(root).getPropertyValue('--visual-accent').trim()};
+        localStorage.setItem(STORAGE_KEY,JSON.stringify({version:2,text,products:productList,colors}));
+        if(showMessage){const b=document.getElementById('visualSave');b.textContent='Saved ✓';setTimeout(()=>b.textContent='Save changes',1300);}
+      }
+      document.getElementById('visualEditToggle').addEventListener('click',()=>{if(editing)persist();setEditing(!editing);});
+      document.getElementById('visualSave').addEventListener('click',()=>persist());
+      [['visualPageColor','page'],['visualPrimaryColor','primary'],['visualAccentColor','accent']].forEach(([id,key])=>{const input=document.getElementById(id);input.value=getComputedStyle(root).getPropertyValue(colorKeys[key]).trim()||input.value;input.addEventListener('input',()=>root.style.setProperty(colorKeys[key],input.value));});
+      document.getElementById('visualAddProduct').addEventListener('click',()=>{const id='custom-'+Date.now();productList.push({id,name:'New product',category:currentTab==='all'?'vegetables':currentTab,weight:'1 kg',price:0,badge:'Fresh',icon:'fa-leaf',iconColor:'text-emerald-600',bgColor:'bg-emerald-50'});renderProducts();attachCardTools();});
+      document.getElementById('visualBackup').addEventListener('click',()=>{persist(false);const blob=new Blob([localStorage.getItem(STORAGE_KEY)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sagar-sample-website-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);});
+      new MutationObserver(attachCardTools).observe(grid,{childList:true,subtree:true});
+      window.addEventListener('load',()=>attachCardTools());
+    })();
+    </script></body>
+</html>
+
+
+
+
+
+
+
